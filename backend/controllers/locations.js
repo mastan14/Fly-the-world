@@ -1,4 +1,4 @@
-const {Registration} = require('../models/schema');
+const {Registration, User} = require('../models/schema');
 
 
 
@@ -23,6 +23,10 @@ const Register =(req,res)=>{
     res.render('pages/register')
 }
 
+const signup_get = (req, res)=>{
+    res.render('pages/signup');
+}
+
 
 const Register_post = async (req, res)=>{
     const body = req.body;
@@ -34,6 +38,17 @@ const Register_post = async (req, res)=>{
 }
 
 
+const signup_post = async (req, res) => {
+    const {name, email, password} = req.body;
+    
+    try {
+        const user = await User.create({ name: name, email: email, password: password});
+        res.status(200).json({user: user._id});
+
+    } catch(err) {
+        res.status(400).json(errors);
+    }
+}
 
 module.exports = {
     Homepage,
@@ -41,5 +56,7 @@ module.exports = {
     About,
     Contact,
     Register,
-    Register_post
+    Register_post,
+    signup_get,
+    signup_post
 };
